@@ -1,0 +1,34 @@
+# Copyright (c) 2019 Nordic Semiconductor ASA
+# SPDX-License-Identifier: Apache-2.0
+
+config USB_MCUX_W_HOST
+	bool "NXP MCUX USB Device Controller Driver (plus host)"
+	help
+	  NXP MCUX USB Device Controller Driver for MXRT and LPC SoC's (plus host).
+
+if USB_MCUX_W_HOST
+
+choice USB_MCUX_CONTROLLER_TYPE
+	prompt "USB Controller type"
+	help
+	  Select the type of controller available in the SoC.
+
+config USB_DC_NXP_EHCI
+	bool "MXRT EHCI USB Device Controller"
+	select NOCACHE_MEMORY if HAS_MCUX_CACHE
+	help
+	  Kinetis and RT EHCI USB Device Controller Driver.
+
+endchoice
+
+config USB_DC_MSG_QUEUE_LEN
+	int
+	default 10
+	help
+	  Maximum number of messages USB device controller interrupt can queue
+	  for callback thread
+
+endif # USB_MCUX_W_HOST
+
+
+source "Kconfig.zephyr"
